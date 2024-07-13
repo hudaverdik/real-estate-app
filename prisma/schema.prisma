@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int              @id @default(autoincrement())
+  email          String           @unique
+  password       String
+  name           String?
+  phone          String?
+  profilePicture String?
+  address        String?
+  listings       Listing[]
+  notifications  Notification[]    @relation("UserNotifications")
+  payments       Payment[]        @relation("UserPayments")
+}
+
+model Listing {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+  price         Float
+  propertyType  String
+  address       String
+  userId        Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  User          User     @relation(fields: [userId], references: [id])
+  payments      Payment[] @relation("ListingPayments")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  userId    Int
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], name: "UserNotifications")
+}
+
+model Payment {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  userId    Int
+  listingId Int
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], name: "UserPayments")
+  Listing   Listing  @relation(fields: [listingId], references: [id], name: "ListingPayments")
+}
