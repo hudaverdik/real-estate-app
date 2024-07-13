@@ -33,6 +33,7 @@ jobs:
         env:
           POSTGRESQL_URL: ${{ secrets.POSTGRESQL_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: ${{ secrets.PORT }}
         run: yarn test
 
       - name: Build application
