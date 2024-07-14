@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ts-node-dev --respawn src/server.ts",
     "build": "tsc",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@prisma/client": "^5.16.2",
